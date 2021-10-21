@@ -1,11 +1,19 @@
-import React from 'react';
-import {Text, View} from 'react-native';
+import * as React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Principal from './src/views/Principal';
+import Cadastro from './src/views/Cadastro';
+
+const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <View>
-      <Text>Hello, world!</Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Principal" component={Principal} />
+        <Stack.Screen name="Cadastro" component={Cadastro} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 export default App;
