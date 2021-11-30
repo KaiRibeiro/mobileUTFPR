@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Cadastro = ({navigation}) => {
   return (
@@ -7,6 +8,41 @@ const Cadastro = ({navigation}) => {
       <View style={styles.voltar}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={require('../assets/images/voltar.png')} />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.logo}>
+        <Image source={require('../assets/images/minilogo.png')} />
+      </View>
+      <View style={styles.containerForm}>
+        <View style={styles.inputContainer}>
+          <Icon name="perm-identity" size={20} color="black" />
+          <TextInput style={styles.input} placeholder="Nome" />
+        </View>
+        <View style={styles.inputContainer}>
+          <Icon name="email" size={20} color="black" />
+          <TextInput style={styles.input} placeholder="Email" />
+        </View>
+        <View style={styles.inputContainer}>
+          <Icon name="lock-outline" size={20} color="black" />
+          <TextInput
+            secureTextEntry={true}
+            style={styles.input}
+            placeholder="Senha"
+          />
+        </View>
+      </View>
+      <View style={styles.entrarContainer}>
+        <Text style={styles.text}>Já tem uma conta?</Text>
+        <Text
+          style={styles.textLink}
+          onPress={() => navigation.navigate('Principal')}>
+          {' '}
+          Entre
+        </Text>
+      </View>
+      <View style={styles.containerBotoes}>
+        <TouchableOpacity style={styles.btnCadastrar}>
+          <Text style={styles.textoBtn}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -27,26 +63,49 @@ const styles = {
   logo: {
     marginTop: 14,
   },
-  containerBotoes: {
-    marginTop: 30,
+  containerForm: {
+    marginTop: 60,
+    marginBottom: 10,
   },
-  btnEntrar: {
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    backgroundColor: '#5C96ED',
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    marginBottom: 10,
+  },
+  text: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  textLink: {
+    color: '#5C96ED',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  entrarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   textoBtn: {
     fontSize: 18,
     color: '#FFFFFF',
     alignSelf: 'center',
   },
+  containerBotoes: {
+    marginTop: 30,
+  },
   btnCadastrar: {
     borderRadius: 10,
-    borderWidth: 1,
     paddingVertical: 10,
     paddingHorizontal: 12,
-    borderColor: '#5C96ED',
+    backgroundColor: '#5C96ED',
+    width: 250,
+  },
+  input: {
+    backgroundColor: 'white',
+    width: 275,
+    height: 40,
   },
 };
 
