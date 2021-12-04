@@ -29,6 +29,7 @@ const Cadastro = ({navigation}) => {
       setCarregando(0);
       setMsgTipo('erro');
       setMsg('Por favor preencha todos os campos.');
+      setModalVisible(true);
     } else {
       auth()
         .createUserWithEmailAndPassword(email, senha)

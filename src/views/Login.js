@@ -1,10 +1,58 @@
-import React from 'react';
+import React, {useState} from 'react';
+import auth from '@react-native-firebase/auth';
+import {useSelector, useDispatch} from 'react-redux';
 import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import AlertaCustomizado from '../components/AlertaCustomizado';
 
 const Login = ({navigation}) => {
+  const [email, setEmail] = useState();
+  const [senha, setSenha] = useState();
+  const [msgTipo, setMsgTipo] = useState();
+  const [msg, setMsg] = useState();
+  const [carregando, setCarregando] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const authenticate = () => {
+    setCarregando(1);
+    setMsgTipo(null);
+
+    if (!email || !senha) {
+      setCarregando(0);
+      setMsgTipo('erro');
+      setMsg('Por favor preencha todos os campos.');
+      setModalVisible(true);
+    } else {
+      auth()
+        .signInWithEmailAndPassword(email, senha)
+        .then(resultado => {
+          setMsgTipo('ok');
+          dispatch({
+            type: 'LOGIN',
+            usuarioEmail: email,
+            usuarioId: resultado.user.uid,
+          });
+        })
+        .catch(erro => {
+          setMsgTipo('erro');
+          setMsg(
+            'Por favor, verifique se o seu e-mail e senha estão corretos, ou crie uma conta.'
+          );
+          setModalVisible(true);
+        });
+    }
+  };
+
   return (
     <View style={styles.containerPrincipal}>
+      <AlertaCustomizado
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        msgTipo={msgTipo}
+        msg={msg}
+      />
       <View style={styles.voltar}>
         <TouchableOpacity onPress={() => navigation.navigate('Principal')}>
           <Image source={require('../assets/images/voltar.png')} />
@@ -16,7 +64,11 @@ const Login = ({navigation}) => {
       <View style={styles.containerForm}>
         <View style={styles.inputContainer}>
           <Icon name="email" size={20} color="black" />
-          <TextInput style={styles.input} placeholder="Email" />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            onChangeText={e => setEmail(e)}
+          />
         </View>
         <View style={styles.inputContainer}>
           <Icon name="lock-outline" size={20} color="black" />
@@ -24,6 +76,7 @@ const Login = ({navigation}) => {
             secureTextEntry={true}
             style={styles.input}
             placeholder="Senha"
+            onChangeText={e => setSenha(e)}
           />
         </View>
       </View>
@@ -46,7 +99,7 @@ const Login = ({navigation}) => {
         </Text>
       </View>
       <View style={styles.containerBotoes}>
-        <TouchableOpacity style={styles.btnEntrar}>
+        <TouchableOpacity style={styles.btnEntrar} onPress={authenticate}>
           <Text style={styles.textoBtn}>Entrar</Text>
         </TouchableOpacity>
       </View>

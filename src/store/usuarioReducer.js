@@ -6,7 +6,7 @@ const INITIAL_STATE = {
 function usuarioReducer(state = INITIAL_STATE, action) {
     switch(action.type) {
         case 'LOGIN':
-            return { ...state, usuarioLogado: 1, usuarioEmail: action.usuarioEmail }
+            return { ...state, usuarioLogado: 1, usuarioEmail: action.usuarioEmail, usuarioId: action.usuarioId }
         case 'LOGOUT':
             return { ...state, usuarioLogado: 0, usuarioEmail: null }
         default:
