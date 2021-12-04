@@ -5,11 +5,10 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-  Pressable,
-  Modal,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import firebase from '../config/firebase.js';
+import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import AlertaCustomizado from '../components/AlertaCustomizado';
 
@@ -31,40 +30,40 @@ const Cadastro = ({navigation}) => {
       setMsgTipo('erro');
       setMsg('Por favor preencha todos os campos.');
     } else {
-      firebase.auth().createUserWithEmailAndPassword(email, senha)
-        .then((resultado) => {
-          const usersRef = firestore.collection('users');
-          usersRef.add({
-            id: resultado.user.uid,
-            nome: nome,
-            email: email,
-          })
-          .then((resultado) => {
-            console.log('aaa');
-            setCarregando(0);
-            setMsgTipo('ok');
-          })
-          .catch((erro) => {
-            setCarregando(0);
-            setMsgTipo('erro');
-            console.log(erro)
-          });
+      auth()
+        .createUserWithEmailAndPassword(email, senha)
+        .then(resultado => {
+          const usuariosCollection = firestore().collection('usuarios');
+          usuariosCollection
+            .add({
+              id: resultado.user.uid,
+              nome: nome,
+              email: email,
+            })
+            .then(resultado => {
+              setCarregando(0);
+              setMsgTipo('ok');
+            })
+            .catch(erro => {
+              setCarregando(0);
+              setMsgTipo('erro');
+            });
           setCarregando(0);
           setMsgTipo('ok');
           setMsg('Usuário cadastrado com sucesso.');
           setModalVisible(true);
         })
-        .catch((erro) => {
+        .catch(erro => {
           setCarregando(0);
           setMsgTipo('erro');
           switch (erro.message) {
-            case 'Firebase: Password should be at least 6 characters (auth/weak-password).':
+            case '[auth/weak-password] The given password is invalid. [ Password should be at least 6 characters ]':
               setMsg('A senha deve ter pelo menos 6 caracteres.');
               break;
-            case 'Firebase: The email address is already in use by another account. (auth/email-already-in-use).':
+            case '[auth/email-already-in-use] The email address is already in use by another account.':
               setMsg('Esse email já está em uso.');
               break;
-            case 'Firebase: The email address is badly formatted. (auth/invalid-email).':
+            case '[auth/invalid-email] The email address is badly formatted.':
               setMsg('O formato de email é inválido.');
               break;
             default:
@@ -80,61 +79,75 @@ const Cadastro = ({navigation}) => {
 
   return (
     <View style={styles.containerPrincipal}>
-        <AlertaCustomizado
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          msgTipo={msgTipo}
-          msg={msg}
-        />
+      <AlertaCustomizado
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        msgTipo={msgTipo}
+        msg={msg}
+      />
       <View style={styles.voltar}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.navigate('Principal')}>
           <Image source={require('../assets/images/voltar.png')} />
         </TouchableOpacity>
       </View>
       <View style={styles.logo}>
         <Image source={require('../assets/images/minilogo.png')} />
       </View>
-      <View style={styles.containerForm}>
-        <View style={styles.inputContainer}>
-          <Icon name="perm-identity" size={20} color="black" />
-          <TextInput
-            style={styles.input}
-            placeholder="Nome"
-            onChangeText={e => setNome(e)}
-          />
+      {carregando ? (
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <ActivityIndicator size={300} color="#5C96ED" />
         </View>
-        <View style={styles.inputContainer}>
-          <Icon name="email" size={20} color="black" />
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            onChangeText={e => setEmail(e)}
-          />
+      ) : (
+        <View style={styles.containerForm}>
+          <View style={styles.inputContainer}>
+            <Icon name="perm-identity" size={20} color="black" />
+            <TextInput
+              style={styles.input}
+              placeholder="Nome"
+              onChangeText={e => setNome(e)}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Icon name="email" size={20} color="black" />
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              onChangeText={e => setEmail(e)}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Icon name="lock-outline" size={20} color="black" />
+            <TextInput
+              secureTextEntry={true}
+              style={styles.input}
+              placeholder="Senha"
+              onChangeText={e => setSenha(e)}
+            />
+          </View>
         </View>
-        <View style={styles.inputContainer}>
-          <Icon name="lock-outline" size={20} color="black" />
-          <TextInput
-            secureTextEntry={true}
-            style={styles.input}
-            placeholder="Senha"
-            onChangeText={e => setSenha(e)}
-          />
+      )}
+      {carregando ? (
+        <></>
+      ) : (
+        <View style={styles.entrarContainer}>
+          <Text style={styles.text}>Já tem uma conta?</Text>
+          <Text
+            style={styles.textLink}
+            onPress={() => navigation.navigate('Login')}>
+            {' '}
+            Entre
+          </Text>
         </View>
-      </View>
-      <View style={styles.entrarContainer}>
-        <Text style={styles.text}>Já tem uma conta?</Text>
-        <Text
-          style={styles.textLink}
-          onPress={() => navigation.navigate('Principal')}>
-          {' '}
-          Entre
-        </Text>
-      </View>
-      <View style={styles.containerBotoes}>
-        <TouchableOpacity style={styles.btnCadastrar} onPress={cadastrar}>
-          <Text style={styles.textoBtn}>Cadastrar</Text>
-        </TouchableOpacity>
-      </View>
+      )}
+      {carregando ? (
+        <></>
+      ) : (
+        <View style={styles.containerBotoes}>
+          <TouchableOpacity style={styles.btnCadastrar} onPress={cadastrar}>
+            <Text style={styles.textoBtn}>Cadastrar</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };

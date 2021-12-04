@@ -6,7 +6,7 @@ const Login = ({navigation}) => {
   return (
     <View style={styles.containerPrincipal}>
       <View style={styles.voltar}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.navigate('Principal')}>
           <Image source={require('../assets/images/voltar.png')} />
         </TouchableOpacity>
       </View>
@@ -31,7 +31,7 @@ const Login = ({navigation}) => {
         <Text style={styles.text}>Não tem uma conta?</Text>
         <Text
           style={styles.textLink}
-          onPress={() => navigation.navigate('Principal')}>
+          onPress={() => navigation.navigate('Cadastro')}>
           {' '}
           Cadastre-se
         </Text>

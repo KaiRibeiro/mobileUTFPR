@@ -1,8 +1,10 @@
 import React from 'react';
 import {View, Pressable, Modal, Text, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useNavigation} from '@react-navigation/native';
 
 const AlertaCustomizado = props => {
+  const navigation = useNavigation();
   return (
     <Modal
       animationType="fade"
@@ -13,14 +15,25 @@ const AlertaCustomizado = props => {
       }}>
       <Pressable
         style={styles.backdrop}
-        onPress={() => props.setModalVisible(false)}
+        onPress={() => {
+          if (props.msgTipo === 'erro') {
+            props.setModalVisible(false);
+          } else {
+            navigation.navigate('Login');
+            props.setModalVisible(false);
+          }
+        }}
       />
       <View style={styles.caixaAlerta}>
         <View style={(styles.caixaConteudo, styles.container)}>
           {props.msgTipo === 'erro' ? (
             <Icon style={styles.iconeErro} name="error-outline" size={50} />
           ) : (
-            <Icon style={styles.iconeOk} name="check-circle-outline" size={50} />
+            <Icon
+              style={styles.iconeOk}
+              name="check-circle-outline"
+              size={50}
+            />
           )}
           <Text
             style={[
@@ -34,7 +47,16 @@ const AlertaCustomizado = props => {
           </Text>
           <Text style={styles.mensagem}>{props.msg}</Text>
           <View style={styles.containerBotoes}>
-            <TouchableOpacity style={styles.btnCadastrar} onPress={() => props.setModalVisible(false)}>
+            <TouchableOpacity
+              style={styles.btnCadastrar}
+              onPress={() => {
+                if (props.msgTipo === 'erro') {
+                  props.setModalVisible(false);
+                } else {
+                  navigation.navigate('Login');
+                  props.setModalVisible(false);
+                }
+              }}>
               <Text style={styles.textoBtn}>OK</Text>
             </TouchableOpacity>
           </View>
