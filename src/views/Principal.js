@@ -11,7 +11,9 @@ const Principal = ({navigation}) => {
         <Image source={require('../assets/images/pessoas.png')} />
       </View>
       <View style={styles.containerBotoes}>
-        <TouchableOpacity style={styles.btnEntrar}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Login')}
+          style={styles.btnEntrar}>
           <Text style={styles.textoBtn}>Entrar</Text>
         </TouchableOpacity>
         <Image
