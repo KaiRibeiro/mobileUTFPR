@@ -1,8 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {Text, ActivityIndicator, View, Image} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  Text,
+  ActivityIndicator,
+  View,
+  Image,
+  ImageBackground,
+  Pressable,
+} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import Header from '../components/Header';
+import mockupReservas from '../assets/images/mockupReservas.png';
+import piscinaNavegacao from '../assets/images/piscinaNavegacao.jpg';
 
 const Home = ({navigation}) => {
   const id = useSelector(state => state.usuarioId);
@@ -74,6 +83,63 @@ const Home = ({navigation}) => {
           </View>
         </View>
       )}
+
+      <View style={styles.containerNavegacao}>
+        <Text
+          style={{
+            textAlign: 'left',
+            fontWeight: 'bold',
+            fontSize: 18,
+            color: 'black',
+          }}>
+          Navegação
+        </Text>
+        <Pressable
+          style={styles.containerImagensNavegacao}
+          onPress={() => navigation.navigate('Ambientes')}>
+          <ImageBackground
+            style={styles.containerImagensNavegacao}
+            source={piscinaNavegacao}
+            resizeMode="cover">
+            <View
+              style={{
+                backgroundColor: '#95785A99',
+                flex: 1,
+                flexDirection: 'column',
+                width: 150,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
+                Ambientes
+              </Text>
+            </View>
+          </ImageBackground>
+        </Pressable>
+        <Pressable
+          style={styles.containerImagensNavegacao}
+          onPress={() => navigation.navigate('Reservas')}>
+          <ImageBackground
+            style={styles.containerImagensNavegacao}
+            source={mockupReservas}
+            resizeMode="cover">
+            <View
+              style={{
+                backgroundColor: '#E0DFEF99',
+                flex: 1,
+                flexDirection: 'column',
+                width: 150,
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'flex-end',
+              }}>
+              <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
+                Reservas
+              </Text>
+            </View>
+          </ImageBackground>
+        </Pressable>
+      </View>
     </View>
   );
 };
@@ -90,6 +156,18 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  containerImagensNavegacao: {
+    flex: 1,
+    justifyContent: 'center',
+    marginTop: 15,
+  },
+  containerNavegacao: {
+    flex: 1,
+    flexDirection: 'column',
+    textAlign: 'left',
+    alignSelf: 'stretch',
+    padding: 30,
   },
 };
 

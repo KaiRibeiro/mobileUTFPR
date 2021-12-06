@@ -165,6 +165,7 @@ const TelasLogado = () => {
             user.isAdmin ? (
               <Stack.Screen
                 name="Ambientes"
+                key={user.id}
                 component={Ambientes}
                 options={{
                   headerShown: false,
@@ -186,6 +187,7 @@ const TelasLogado = () => {
             user.isAdmin ? (
               <Stack.Screen
                 name="Reservas"
+                key={user.id}
                 component={Reservas}
                 options={{
                   headerShown: false,
