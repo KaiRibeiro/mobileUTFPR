@@ -11,15 +11,18 @@ const AlertaCustomizado = props => {
       transparent={true}
       visible={props.modalVisible}
       onRequestClose={() => {
-        setModalVisible(!props.modalVisible);
+        props.setModalVisible(!props.modalVisible);
       }}>
       <Pressable
         style={styles.backdrop}
         onPress={() => {
           if (props.msgTipo === 'erro') {
             props.setModalVisible(false);
-          } else {
+          } else if (props.msgTipo === 'ok') {
             navigation.navigate('Login');
+            props.setModalVisible(false);
+          } else if (props.msgTipo === 'okAmbiente') {
+            navigation.navigate('Ambientes');
             props.setModalVisible(false);
           }
         }}
@@ -52,8 +55,12 @@ const AlertaCustomizado = props => {
               onPress={() => {
                 if (props.msgTipo === 'erro') {
                   props.setModalVisible(false);
-                } else {
+                } else if (props.msgTipo === 'ok') {
                   navigation.navigate('Login');
+                  props.setModalVisible(false);
+                } else if (props.msgTipo === 'okAmbiente') {
+                  console.log('adawdawdaw');
+                  navigation.navigate('Ambientes');
                   props.setModalVisible(false);
                 }
               }}>

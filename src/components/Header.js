@@ -40,6 +40,7 @@ const styles = {
     paddingLeft: 10,
     paddingRight: 10,
     marginBottom: 30,
+    elevation: 3,
   },
 };
 
