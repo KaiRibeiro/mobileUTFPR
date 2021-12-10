@@ -1680,6 +1680,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-13.1.0.tgz#63d86e37cd8676b4ea3b55a5d6227cf2ba933cfd"
   integrity sha512-Ai7qkNt7WMINab0cvWGI7Hx1jfd5vppGyW1SN4MxvEgJOnLFqtxQf+dfC9RQ1MXnLcHSyIzht78Nuex8Y/9PKg==
 
+"@react-native-firebase/storage@^13.1.0":
+  version "13.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-13.1.0.tgz#a8e7b6178b94114a34c33302d46a0f38683291d3"
+  integrity sha512-68WSOzxJB58+fRyXIdFFYQIFDe4qIAJryIJ3alN0wpXv0HmVQa6medrgpcQxtKgpskYkR3yRgmweqr+uqzzfog==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
@@ -6288,6 +6293,11 @@ react-native-gesture-handler@^2.0.0:
     invariant "^2.2.4"
     lodash "^4.17.21"
     prop-types "^15.7.2"
+
+react-native-image-picker@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-4.5.0.tgz#dda5de50cc9617a8f0c26b71160da1cd088869b3"
+  integrity sha512-YUPNBL5f2BOwpjBmpxQiTy7T36+387ri6hEPB+3PjXEH/MCHwmedfP3iJ+kFNf1wPBHmoKRPiaKcBc/YzBbixg==
 
 react-native-reanimated@^2.2.4:
   version "2.2.4"

@@ -22,7 +22,6 @@ const AlertaCustomizado = props => {
             navigation.navigate('Login');
             props.setModalVisible(false);
           } else if (props.msgTipo === 'okAmbiente') {
-            navigation.navigate('Ambientes');
             props.setModalVisible(false);
           }
         }}
@@ -59,8 +58,6 @@ const AlertaCustomizado = props => {
                   navigation.navigate('Login');
                   props.setModalVisible(false);
                 } else if (props.msgTipo === 'okAmbiente') {
-                  console.log('adawdawdaw');
-                  navigation.navigate('Ambientes');
                   props.setModalVisible(false);
                 }
               }}>

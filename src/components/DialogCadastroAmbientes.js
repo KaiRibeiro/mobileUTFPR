@@ -7,15 +7,17 @@ import {
   TouchableOpacity,
   ImageBackground,
   TextInput,
-  Number,
 } from 'react-native';
+import * as imagePicker from 'react-native-image-picker';
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import AlertaCustomizado from '../components/AlertaCustomizado';
 import piscinaNavegacao from '../assets/images/piscinaNavegacao.jpg';
 
 const DialogCadastroAmbientes = props => {
+  const [imagem, setImagem] = useState();
   const [nome, setNome] = useState();
   const [descricao, setDescricao] = useState();
   const [lotacao, setLotacao] = useState();
@@ -23,10 +25,21 @@ const DialogCadastroAmbientes = props => {
   const [msg, setMsg] = useState();
   const [modalVisible, setModalVisible] = useState(false);
 
+  const imagePickerCallback = resposta => {
+    if (resposta.didCancel) {
+      console.log('Usuário Cancelou Image Picker');
+    } else if (resposta.error) {
+      console.log('ImagePicker Error: ', resposta.error);
+    } else {
+      console.log(resposta.assets[0].uri);
+      setImagem(resposta.assets[0].uri);
+    }
+  };
+
   const salvar = () => {
     setMsgTipo(null);
 
-    if (!nome || !descricao || !lotacao) {
+    if (!nome || !descricao || !lotacao || !imagem) {
       setMsgTipo('erro');
       setMsg('Por favor preencha todos os campos.');
       setModalVisible(true);
@@ -39,14 +52,25 @@ const DialogCadastroAmbientes = props => {
           lotacao: lotacao,
         })
         .then(resultado => {
-          setMsgTipo('okAmbiente');
-          setMsg('Ambiente cadastrado com sucesso.');
+          storage()
+            .ref(`ambientes/${resultado.id}`)
+            .putFile(imagem)
+            .then(() => {
+              setMsgTipo('okAmbiente');
+              setMsg('Ambiente cadastrado com sucesso.');
+              setModalVisible(true);
+            })
+            .catch(erro => {
+              setMsgTipo('erro');
+              setMsg('Falha ao cadastrar ambiente.');
+              setModalVisible(true);
+            });
         })
         .catch(erro => {
           setMsgTipo('erro');
           setMsg('Falha ao cadastrar ambiente.');
+          setModalVisible(true);
         });
-      setModalVisible(true);
     }
   };
 
@@ -85,7 +109,11 @@ const DialogCadastroAmbientes = props => {
             />
           </View>
 
-          <Pressable style={styles.containerImagem}>
+          <Pressable
+            style={styles.containerImagem}
+            onPress={() =>
+              imagePicker.launchImageLibrary({}, imagePickerCallback)
+            }>
             <ImageBackground
               style={styles.containerImagensNavegacao}
               source={piscinaNavegacao}>
