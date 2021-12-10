@@ -83,63 +83,66 @@ const Home = ({navigation}) => {
           </View>
         </View>
       )}
-
-      <View style={styles.containerNavegacao}>
-        <Text
-          style={{
-            textAlign: 'left',
-            fontWeight: 'bold',
-            fontSize: 18,
-            color: 'black',
-          }}>
-          Navegação
-        </Text>
-        <Pressable
-          style={styles.containerImagensNavegacao}
-          onPress={() => navigation.navigate('Ambientes')}>
-          <ImageBackground
+      {carregando ? null : (
+        <View style={styles.containerNavegacao}>
+          <Text
+            style={{
+              textAlign: 'left',
+              fontWeight: 'bold',
+              fontSize: 18,
+              color: 'black',
+            }}>
+            Navegação
+          </Text>
+          <Pressable
             style={styles.containerImagensNavegacao}
-            source={piscinaNavegacao}
-            resizeMode="cover">
-            <View
-              style={{
-                backgroundColor: '#95785A99',
-                flex: 1,
-                flexDirection: 'column',
-                width: 150,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
-                Ambientes
-              </Text>
-            </View>
-          </ImageBackground>
-        </Pressable>
-        <Pressable
-          style={styles.containerImagensNavegacao}
-          onPress={() => navigation.navigate('Reservas')}>
-          <ImageBackground
+            onPress={() => navigation.navigate('Ambientes')}>
+            <ImageBackground
+              style={styles.containerImagensNavegacao}
+              source={piscinaNavegacao}
+              resizeMode="cover">
+              <View
+                style={{
+                  backgroundColor: '#95785A99',
+                  flex: 1,
+                  flexDirection: 'column',
+                  width: 150,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
+                  Ambientes
+                </Text>
+              </View>
+            </ImageBackground>
+          </Pressable>
+          <Pressable
             style={styles.containerImagensNavegacao}
-            source={mockupReservas}
-            resizeMode="cover">
-            <View
-              style={{
-                backgroundColor: '#E0DFEF99',
-                flex: 1,
-                flexDirection: 'column',
-                width: 150,
-                justifyContent: 'center',
-                alignItems: 'center',
-                alignSelf: 'flex-end',
-              }}>
-              <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
-                Reservas
-              </Text>
-            </View>
-          </ImageBackground>
-        </Pressable>
-      </View>
+            onPress={() => navigation.navigate('Reservas')}>
+            <ImageBackground
+              style={styles.containerImagensNavegacao}
+              source={mockupReservas}
+              resizeMode="cover">
+              <View
+                style={{
+                  backgroundColor: '#E0DFEF99',
+                  flex: 1,
+                  flexDirection: 'column',
+                  width: 150,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  alignSelf: 'flex-end',
+                }}>
+                <Text
+                  style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
+                  Reservas
+                </Text>
+              </View>
+            </ImageBackground>
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 };
