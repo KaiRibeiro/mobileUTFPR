@@ -1,14 +1,25 @@
 import storage from '@react-native-firebase/storage';
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Image, Pressable, Text, View} from 'react-native';
+import {Divider, Menu} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
 import DetalhesAmbiente from './DetalhesAmbiente';
+import AlertaRemover from './AlertaRemover';
 
 const CardAmbiente = props => {
   const [urlImagem, setUrlImagem] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [carregando, setCarregando] = useState(0);
+  const [menuVisivel, setMenuVisivel] = useState(false);
+  const [alertaRemoverVisivel, setAlertaRemoverVisivel] = useState(false);
+
+  const remover = () => {
+    setAlertaRemoverVisivel(true);
+  };
+
+  const abrirMenu = () => setMenuVisivel(true);
+
+  const fecharMenu = () => setMenuVisivel(false);
 
   useEffect(() => {
     setCarregando(1);
@@ -39,6 +50,14 @@ const CardAmbiente = props => {
         justifyContent: 'space-around',
         alignItems: 'center',
       }}>
+      <AlertaRemover
+        alertaRemoverVisivel={alertaRemoverVisivel}
+        setAlertaRemoverVisivel={setAlertaRemoverVisivel}
+        refresh={props.refresh}
+        setRefresh={props.setRefresh}
+        tela={'ambientes'}
+        id={props.idAmbiente}
+      />
       {carregando ? null : (
         <DetalhesAmbiente
           modalVisible={modalVisible}
@@ -59,17 +78,44 @@ const CardAmbiente = props => {
         />
       )}
       <View>
-        <Text
-          numberOfLines={2}
+        <View
           style={{
-            color: 'black',
-            fontSize: 18,
-            fontWeight: 'bold',
-            textAlign: 'left',
-            width: 100,
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
           }}>
-          {props.nomeAmbiente}
-        </Text>
+          <Text
+            numberOfLines={2}
+            style={{
+              color: 'black',
+              fontSize: 18,
+              fontWeight: 'bold',
+              textAlign: 'left',
+              width: 100,
+            }}>
+            {props.nomeAmbiente}
+          </Text>
+          <Menu
+            visible={menuVisivel}
+            onDismiss={fecharMenu}
+            anchor={
+              <Icon
+                onPress={abrirMenu}
+                name="more-vert"
+                size={30}
+                color="black"
+              />
+            }>
+            <Menu.Item
+              onPress={() => setModalVisible(true)}
+              title="Visualizar"
+            />
+            <Menu.Item onPress={remover} title="Editar" />
+            <Divider />
+            <Menu.Item onPress={remover} title="Remover" />
+          </Menu>
+        </View>
+
         <Text
           numberOfLines={5}
           style={{

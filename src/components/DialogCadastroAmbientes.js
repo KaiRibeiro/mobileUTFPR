@@ -3,7 +3,7 @@ import storage from '@react-native-firebase/storage';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
-  ActivityIndicator, ImageBackground, Modal, Pressable, Text, TextInput, TouchableOpacity, View
+  ActivityIndicator, ImageBackground, Modal, Pressable, Text, TextInput, TouchableOpacity, View, Keyboard
 } from 'react-native';
 import * as imagePicker from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -31,6 +31,7 @@ const DialogCadastroAmbientes = props => {
   };
 
   const salvar = () => {
+    Keyboard.dismiss();
     setCarregando(1);
     setMsgTipo(null);
 

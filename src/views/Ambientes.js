@@ -7,6 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  LogBox,
+  Keyboard
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -22,7 +24,10 @@ const Ambientes = ({navigation}) => {
   const [pesquisa, setPesquisa] = useState('');
   let listaAmbientes = [];
 
+  LogBox.ignoreLogs(["EventEmitter.removeListener"]);
+
   useEffect(() => {
+    Keyboard.dismiss();
     firestore()
       .collection('ambientes')
       .get()
@@ -61,8 +66,8 @@ const Ambientes = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.containerBusca}>
-        <Icon name="search" size={20} color="#5C96ED" />
-        <TextInput style={styles.input} placeholder="Buscar" />
+        <TextInput onChangeText={(e) => setPesquisa(e)} style={styles.input} placeholder="Buscar" />
+        <Icon onPress={() => {setRefresh(!refresh)}} name="search" size={50} color="#5C96ED" />
       </View>
       <FlatList
         keyExtractor={item => item.id}
@@ -73,6 +78,8 @@ const Ambientes = ({navigation}) => {
             nomeAmbiente={item.nome}
             descricaoAmbiente={item.descricao}
             lotacaoAmbiente={item.lotacao}
+            refresh={refresh}
+            setRefresh={setRefresh}
           />
         )}
         ListEmptyComponent={() => (
@@ -114,16 +121,19 @@ const styles = {
     marginTop: 15,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-around',
     backgroundColor: 'white',
     marginBottom: 15,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#5C96ED',
-    width: 275,
+    width: 400,
+    padding: 15
   },
   input: {
     backgroundColor: 'white',
     height: 45,
+    width: '100%'
   },
 };
 
