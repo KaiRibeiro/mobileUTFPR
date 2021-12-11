@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import * as imagePicker from 'react-native-image-picker';
 import firestore from '@react-native-firebase/firestore';
@@ -23,6 +24,7 @@ const DialogCadastroAmbientes = props => {
   const [lotacao, setLotacao] = useState();
   const [msgTipo, setMsgTipo] = useState();
   const [msg, setMsg] = useState();
+  const [carregando, setCarregando] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
 
   const imagePickerCallback = resposta => {
@@ -31,17 +33,18 @@ const DialogCadastroAmbientes = props => {
     } else if (resposta.error) {
       console.log('ImagePicker Error: ', resposta.error);
     } else {
-      console.log(resposta.assets[0].uri);
       setImagem(resposta.assets[0].uri);
     }
   };
 
   const salvar = () => {
+    setCarregando(1);
     setMsgTipo(null);
 
     if (!nome || !descricao || !lotacao || !imagem) {
       setMsgTipo('erro');
       setMsg('Por favor preencha todos os campos.');
+      setCarregando(0);
       setModalVisible(true);
     } else {
       const ambientesCollection = firestore().collection('ambientes');
@@ -58,17 +61,24 @@ const DialogCadastroAmbientes = props => {
             .then(() => {
               setMsgTipo('okAmbiente');
               setMsg('Ambiente cadastrado com sucesso.');
+              setNome('');
+              setDescricao('');
+              setLotacao('');
+              setImagem(null);
+              setCarregando(0);
               setModalVisible(true);
             })
             .catch(erro => {
               setMsgTipo('erro');
               setMsg('Falha ao cadastrar ambiente.');
+              setCarregando(0);
               setModalVisible(true);
             });
         })
         .catch(erro => {
           setMsgTipo('erro');
           setMsg('Falha ao cadastrar ambiente.');
+          setCarregando(0);
           setModalVisible(true);
         });
     }
@@ -82,6 +92,13 @@ const DialogCadastroAmbientes = props => {
       visible={props.modalVisible}
       onRequestClose={() => {
         props.setModalVisible(!props.modalVisible);
+      }}
+      onShow={() => {
+        setNome('');
+        setDescricao('');
+        setLotacao('');
+        setImagem(null);
+        setCarregando(0);
       }}>
       <Pressable
         style={styles.backdrop}
@@ -89,7 +106,14 @@ const DialogCadastroAmbientes = props => {
           props.setModalVisible(false);
         }}
       />
-      <View style={styles.caixaAlerta}>
+      {carregando ? (
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <ActivityIndicator size={300} color="#5C96ED" />
+        </View>
+      )
+      :
+      (
+        <View style={styles.caixaAlerta}>
         <AlertaCustomizado
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
@@ -112,13 +136,24 @@ const DialogCadastroAmbientes = props => {
           <Pressable
             style={styles.containerImagem}
             onPress={() =>
-              imagePicker.launchImageLibrary({}, imagePickerCallback)
+              imagePicker.launchImageLibrary(
+                {includeBase64: true},
+                imagePickerCallback
+              )
             }>
-            <ImageBackground
-              style={styles.containerImagensNavegacao}
-              source={piscinaNavegacao}>
-              <Icon name="add" size={150} color="white" />
-            </ImageBackground>
+            {imagem ? (
+              <ImageBackground
+                style={styles.containerImagensNavegacao}
+                source={{uri: imagem}}>
+                <Icon name="add" size={150} color="white" />
+              </ImageBackground>
+            ) : (
+              <ImageBackground
+                style={styles.containerImagensNavegacao}
+                source={piscinaNavegacao}>
+                <Icon name="add" size={150} color="white" />
+              </ImageBackground>
+            )}
           </Pressable>
 
           <View style={styles.formContainer}>
@@ -170,6 +205,7 @@ const DialogCadastroAmbientes = props => {
           </TouchableOpacity>
         </View>
       </View>
+      )}
     </Modal>
   );
 };
