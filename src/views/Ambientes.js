@@ -1,23 +1,23 @@
-import React, {useState, useEffect} from 'react';
+import firestore from '@react-native-firebase/firestore';
+import React, {useEffect, useState} from 'react';
 import {
+  FlatList,
   SafeAreaView,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
-  Image,
-  TextInput,
-  ActivityIndicator,
-  FlatList,
 } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Header from '../components/Header';
-import DialogCadastroAmbientes from '../components/DialogCadastroAmbientes';
+
 import CardAmbiente from '../components/CardAmbiente';
+import DialogCadastroAmbientes from '../components/DialogCadastroAmbientes';
+import Header from '../components/Header';
 
 const Ambientes = ({navigation}) => {
   const [carregando, setCarregando] = useState();
   const [modalVisible, setModalVisible] = useState(false);
+  const [refresh, setRefresh] = useState(0);
   const [ambientes, setAmbientes] = useState();
   const [pesquisa, setPesquisa] = useState('');
   let listaAmbientes = [];
@@ -37,7 +37,7 @@ const Ambientes = ({navigation}) => {
         });
         setAmbientes(listaAmbientes);
       });
-  }, []);
+  }, [refresh]);
 
   return (
     <SafeAreaView style={styles.containerPrincipal}>
@@ -45,6 +45,8 @@ const Ambientes = ({navigation}) => {
       <DialogCadastroAmbientes
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        refresh={refresh}
+        setRefresh={setRefresh}
       />
       <View style={styles.containerCadastrar}>
         <Text style={{fontWeight: 'bold', fontSize: 24, color: 'black'}}>

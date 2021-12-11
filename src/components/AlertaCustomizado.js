@@ -1,7 +1,7 @@
-import React from 'react';
-import {View, Pressable, Modal, Text, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
+import React from 'react';
+import {Modal, Pressable, Text, TouchableOpacity, View} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const AlertaCustomizado = props => {
   const navigation = useNavigation();
@@ -22,6 +22,7 @@ const AlertaCustomizado = props => {
             navigation.navigate('Login');
             props.setModalVisible(false);
           } else if (props.msgTipo === 'okAmbiente') {
+            navigation.navigate('Ambientes');
             props.setModalVisible(false);
           }
         }}
@@ -58,6 +59,7 @@ const AlertaCustomizado = props => {
                   navigation.navigate('Login');
                   props.setModalVisible(false);
                 } else if (props.msgTipo === 'okAmbiente') {
+                  navigation.navigate('Ambientes');
                   props.setModalVisible(false);
                 }
               }}>

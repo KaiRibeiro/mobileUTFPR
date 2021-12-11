@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
 import auth from '@react-native-firebase/auth';
-import {useSelector, useDispatch} from 'react-redux';
-import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import AlertaCustomizado from '../components/AlertaCustomizado';
+import React, { useState } from 'react';
+import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useDispatch } from 'react-redux';
+import AlertaCustomizado from '../components/AlertaCustomizado';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState();

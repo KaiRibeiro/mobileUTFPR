@@ -1,21 +1,14 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Pressable,
-  Modal,
-  Text,
-  TouchableOpacity,
-  ImageBackground,
-  TextInput,
-  ActivityIndicator,
-} from 'react-native';
-import * as imagePicker from 'react-native-image-picker';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import {
+  ActivityIndicator, ImageBackground, Modal, Pressable, Text, TextInput, TouchableOpacity, View
+} from 'react-native';
+import * as imagePicker from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {useNavigation} from '@react-navigation/native';
-import AlertaCustomizado from '../components/AlertaCustomizado';
 import piscinaNavegacao from '../assets/images/piscinaNavegacao.jpg';
+import AlertaCustomizado from '../components/AlertaCustomizado';
 
 const DialogCadastroAmbientes = props => {
   const [imagem, setImagem] = useState();
@@ -103,6 +96,7 @@ const DialogCadastroAmbientes = props => {
       <Pressable
         style={styles.backdrop}
         onPress={() => {
+          navigation.navigate('Ambientes');
           props.setModalVisible(false);
         }}
       />
@@ -129,7 +123,10 @@ const DialogCadastroAmbientes = props => {
               name="close"
               size={40}
               color="white"
-              onPress={() => props.setModalVisible(false)}
+              onPress={() => {
+                props.setRefresh(!props.refresh);
+                props.setModalVisible(false);
+              }}
             />
           </View>
 
