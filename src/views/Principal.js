@@ -1,9 +1,10 @@
 import React from 'react';
 import {Text, TouchableOpacity, View, Image} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Principal = ({navigation}) => {
   return (
-    <View style={styles.containerPrincipal}>
+    <SafeAreaView style={styles.containerPrincipal}>
       <View style={styles.logo}>
         <Image source={require('../assets/images/logo.png')} />
       </View>
@@ -30,7 +31,7 @@ const Principal = ({navigation}) => {
           <Text style={styles.textoBtn}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

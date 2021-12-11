@@ -1,15 +1,46 @@
-import React, {useState} from 'react';
-import {Text, TouchableOpacity, View, Image, TextInput} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  TextInput,
+  ActivityIndicator,
+  FlatList,
+} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Header from '../components/Header';
 import DialogCadastroAmbientes from '../components/DialogCadastroAmbientes';
+import CardAmbiente from '../components/CardAmbiente';
 
 const Ambientes = ({navigation}) => {
   const [carregando, setCarregando] = useState();
   const [modalVisible, setModalVisible] = useState(false);
+  const [ambientes, setAmbientes] = useState();
+  const [pesquisa, setPesquisa] = useState('');
+  let listaAmbientes = [];
+
+  useEffect(() => {
+    firestore()
+      .collection('ambientes')
+      .get()
+      .then(async resultado => {
+        await resultado.docs.forEach(doc => {
+          if (doc.data().nome.indexOf(pesquisa) >= 0) {
+            listaAmbientes.push({
+              id: doc.id,
+              ...doc.data(),
+            });
+          }
+        });
+        setAmbientes(listaAmbientes);
+      });
+  }, []);
 
   return (
-    <View style={styles.containerPrincipal}>
+    <SafeAreaView style={styles.containerPrincipal}>
       <Header />
       <DialogCadastroAmbientes
         modalVisible={modalVisible}
@@ -31,13 +62,34 @@ const Ambientes = ({navigation}) => {
         <Icon name="search" size={20} color="#5C96ED" />
         <TextInput style={styles.input} placeholder="Buscar" />
       </View>
-    </View>
+      <FlatList
+        keyExtractor={item => item.id}
+        data={ambientes}
+        renderItem={({item}) => (
+          <CardAmbiente
+            idAmbiente={item.id}
+            nomeAmbiente={item.nome}
+            descricaoAmbiente={item.descricao}
+            lotacaoAmbiente={item.lotacao}
+          />
+        )}
+        ListEmptyComponent={() => (
+          <View
+            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Text
+              style={{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>
+              Não há ambientes cadastrados
+            </Text>
+          </View>
+        )}
+        contentContainerStyle={{paddingBottom: '50%', paddingTop: '5%'}}
+      />
+    </SafeAreaView>
   );
 };
 
 const styles = {
   containerPrincipal: {
-    flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',

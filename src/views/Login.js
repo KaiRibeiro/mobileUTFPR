@@ -4,6 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AlertaCustomizado from '../components/AlertaCustomizado';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState();
@@ -46,7 +47,7 @@ const Login = ({navigation}) => {
   };
 
   return (
-    <View style={styles.containerPrincipal}>
+    <SafeAreaView style={styles.containerPrincipal}>
       <AlertaCustomizado
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -103,7 +104,7 @@ const Login = ({navigation}) => {
           <Text style={styles.textoBtn}>Entrar</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

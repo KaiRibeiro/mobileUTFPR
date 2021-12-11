@@ -12,6 +12,7 @@ import firestore from '@react-native-firebase/firestore';
 import Header from '../components/Header';
 import mockupReservas from '../assets/images/mockupReservas.png';
 import piscinaNavegacao from '../assets/images/piscinaNavegacao.jpg';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Home = ({navigation}) => {
   const id = useSelector(state => state.usuarioId);
@@ -51,7 +52,7 @@ const Home = ({navigation}) => {
   }, []);
 
   return (
-    <View style={styles.containerPrincipal}>
+    <SafeAreaView style={styles.containerPrincipal}>
       <Header />
       {carregando ? (
         <View style={{flex: 1, justifyContent: 'center'}}>
@@ -143,7 +144,7 @@ const Home = ({navigation}) => {
           </Pressable>
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

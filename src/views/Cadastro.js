@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
+  SafeAreaView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import auth from '@react-native-firebase/auth';
@@ -79,7 +80,7 @@ const Cadastro = ({navigation}) => {
   };
 
   return (
-    <View style={styles.containerPrincipal}>
+    <SafeAreaView style={styles.containerPrincipal}>
       <AlertaCustomizado
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -149,7 +150,7 @@ const Cadastro = ({navigation}) => {
           </TouchableOpacity>
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
