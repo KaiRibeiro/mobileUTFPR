@@ -10,15 +10,15 @@ const DetalhesAmbiente = props => {
       presentationStyle="overFullScreen"
       animationType="fade"
       transparent={true}
-      visible={props.modalVisible}
+      visible={props.detalhesAmbienteVisible}
       onRequestClose={() => {
-        props.setModalVisible(!props.modalVisible);
+        props.setDetalhesAmbienteVisible(!props.detalhesAmbienteVisible);
       }}>
       <Pressable
         style={styles.backdrop}
         onPress={() => {
           navigation.navigate('Ambientes');
-          props.setModalVisible(false);
+          props.setDetalhesAmbienteVisible(false);
         }}
       />
       <View style={styles.caixaAlerta}>
@@ -32,7 +32,7 @@ const DetalhesAmbiente = props => {
               size={40}
               color="white"
               onPress={() => {
-                props.setModalVisible(false);
+                props.setDetalhesAmbienteVisible(false);
               }}
             />
           </View>

@@ -5,16 +5,22 @@ import {Divider, Menu} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DetalhesAmbiente from './DetalhesAmbiente';
 import AlertaRemover from './AlertaRemover';
+import DialogCadastroAmbientes from '../components/DialogCadastroAmbientes';
 
 const CardAmbiente = props => {
   const [urlImagem, setUrlImagem] = useState();
   const [modalVisible, setModalVisible] = useState(false);
+  const [detalhesAmbienteVisible, setDetalhesAmbienteVisible] = useState(false);
   const [carregando, setCarregando] = useState(0);
   const [menuVisivel, setMenuVisivel] = useState(false);
   const [alertaRemoverVisivel, setAlertaRemoverVisivel] = useState(false);
 
   const remover = () => {
     setAlertaRemoverVisivel(true);
+  };
+
+  const editar = () => {
+    setModalVisible(true);
   };
 
   const abrirMenu = () => setMenuVisivel(true);
@@ -32,13 +38,12 @@ const CardAmbiente = props => {
       })
       .catch(erro => {
         setCarregando(0);
-        console.log(erro);
       });
-  }, []);
+  }, [props.refresh]);
 
   return (
     <Pressable
-      onPress={() => setModalVisible(true)}
+      onPress={() => setDetalhesAmbienteVisible(true)}
       style={{
         flexDirection: 'row',
         backgroundColor: '#00000021',
@@ -50,6 +55,18 @@ const CardAmbiente = props => {
         justifyContent: 'space-around',
         alignItems: 'center',
       }}>
+      <DialogCadastroAmbientes
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        idAmbiente={props.idAmbiente}
+        nomeAmbiente={props.nomeAmbiente}
+        descricaoAmbiente={props.descricaoAmbiente}
+        lotacaoAmbiente={props.lotacaoAmbiente}
+        imagem={urlImagem}
+        editar={true}
+        refresh={props.refresh}
+        setRefresh={props.setRefresh}
+      />
       <AlertaRemover
         alertaRemoverVisivel={alertaRemoverVisivel}
         setAlertaRemoverVisivel={setAlertaRemoverVisivel}
@@ -60,8 +77,8 @@ const CardAmbiente = props => {
       />
       {carregando ? null : (
         <DetalhesAmbiente
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
+          detalhesAmbienteVisible={detalhesAmbienteVisible}
+          setDetalhesAmbienteVisible={setDetalhesAmbienteVisible}
           idAmbiente={props.idAmbiente}
           nomeAmbiente={props.nomeAmbiente}
           descricaoAmbiente={props.descricaoAmbiente}
@@ -110,7 +127,7 @@ const CardAmbiente = props => {
               onPress={() => setModalVisible(true)}
               title="Visualizar"
             />
-            <Menu.Item onPress={remover} title="Editar" />
+            <Menu.Item onPress={editar} title="Editar" />
             <Divider />
             <Menu.Item onPress={remover} title="Remover" />
           </Menu>

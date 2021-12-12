@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
   LogBox,
-  Keyboard
+  Keyboard,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -24,7 +24,7 @@ const Ambientes = ({navigation}) => {
   const [pesquisa, setPesquisa] = useState('');
   let listaAmbientes = [];
 
-  LogBox.ignoreLogs(["EventEmitter.removeListener"]);
+  LogBox.ignoreLogs(['EventEmitter.removeListener']);
 
   useEffect(() => {
     Keyboard.dismiss();
@@ -66,8 +66,19 @@ const Ambientes = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.containerBusca}>
-        <TextInput onChangeText={(e) => setPesquisa(e)} style={styles.input} placeholder="Buscar" />
-        <Icon onPress={() => {setRefresh(!refresh)}} name="search" size={50} color="#5C96ED" />
+        <TextInput
+          onChangeText={e => setPesquisa(e)}
+          style={styles.input}
+          placeholder="Buscar"
+        />
+        <Icon
+          onPress={() => {
+            setRefresh(!refresh);
+          }}
+          name="search"
+          size={50}
+          color="#5C96ED"
+        />
       </View>
       <FlatList
         keyExtractor={item => item.id}
@@ -128,12 +139,12 @@ const styles = {
     borderWidth: 1,
     borderColor: '#5C96ED',
     width: 400,
-    padding: 15
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   input: {
     backgroundColor: 'white',
-    height: 45,
-    width: '100%'
+    width: '100%',
   },
 };
 
