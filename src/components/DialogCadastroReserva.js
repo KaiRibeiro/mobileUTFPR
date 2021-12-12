@@ -25,13 +25,61 @@ const DialogCadastroReserva = props => {
   const [modalVisible, setModalVisible] = useState(false);
   const [ambientes, setAmbientes] = useState();
   const [pesquisa, setPesquisa] = useState('');
-  const [idAmbienteSelecionado, setIdAmbienteSelecionado] = useState();
+  const [nomeAmbienteSelecionado, setNomeAmbienteSelecionado] = useState();
   const [data, setData] = useState(new Date());
   const [dataString, setDataString] = useState();
   const [mostrarDatePicker, setMostrarDatePicker] = useState(false);
+  const [pessoas, setPessoas] = useState();
+  const [lotacaoMaximaSelecionado, setLotacaoMaximaSelecionado] = useState();
   let listaAmbientes = [];
 
   const navigation = useNavigation();
+
+  const salvar = () => {
+    Keyboard.dismiss();
+    setCarregando(1);
+    setMsgTipo(null);
+
+    if (!nomeAmbienteSelecionado || !data || !pessoas) {
+      setMsgTipo('erro');
+      setMsg('Por favor preencha todos os campos.');
+      setCarregando(0);
+      setModalVisible(true);
+    } else if (pessoas > lotacaoMaximaSelecionado) {
+      setMsgTipo('erro');
+      setMsg(
+        'Quantidade de pessoas está ultrapassando a lotação máxima do ambiente.'
+      );
+      setCarregando(0);
+      setModalVisible(true);
+    } else {
+      const reservasCollection = firestore().collection('reservas');
+      reservasCollection
+        .add({
+          data: data,
+          pessoas: pessoas,
+          nomeAmbiente: nomeAmbienteSelecionado,
+          idUsario: props.idUsuario,
+          pessoas: pessoas,
+        })
+        .then(resultado => {
+          setMsgTipo('okAmbiente');
+          setMsg('Reserva realizada com sucesso.');
+          setData(new Date());
+          setDataString(null);
+          setNomeAmbienteSelecionado(null);
+          setPessoas(null);
+          setCarregando(0);
+          setModalVisible(true);
+        })
+        .catch(erro => {
+          setMsgTipo('erro');
+          setMsg('Falha ao realizar reserva.');
+          setCarregando(0);
+          setModalVisible(true);
+        });
+    }
+  };
 
   return (
     <Modal
@@ -56,13 +104,15 @@ const DialogCadastroReserva = props => {
             });
             setAmbientes(listaAmbientes);
           });
-        setIdAmbienteSelecionado(null);
+        setNomeAmbienteSelecionado(null);
+        setDataString(null);
+        setPessoas(null);
         setDataString(null);
       }}>
       <Pressable
         style={styles.backdrop}
         onPress={() => {
-          navigation.navigate('Ambientes');
+          navigation.navigate('Início');
           props.setModalVisible(false);
         }}
       />
@@ -79,7 +129,7 @@ const DialogCadastroReserva = props => {
             msg={msg}
           />
           <DatePicker
-            title='Selecione a data'
+            title="Selecione a data"
             modal
             open={mostrarDatePicker}
             date={data}
@@ -88,9 +138,9 @@ const DialogCadastroReserva = props => {
             confirmText={'Confirmar'}
             cancelText={'Cancelar'}
             onConfirm={data => {
-                setMostrarDatePicker(false);
+              setMostrarDatePicker(false);
               setData(data);
-              setDataString(data.toLocaleDateString('pt-BR'))
+              setDataString(data.toLocaleDateString('pt-BR'));
               setMostrarDatePicker(false);
             }}
             onCancel={() => {
@@ -111,7 +161,7 @@ const DialogCadastroReserva = props => {
                 }}
               />
             </View>
-            <View>
+            <View style={{marginTop: '10%'}}>
               <FlatList
                 horizontal
                 snapToAlignment={'center'}
@@ -124,8 +174,10 @@ const DialogCadastroReserva = props => {
                     descricaoAmbiente={item.descricao}
                     lotacaoAmbiente={item.lotacao}
                     reserva={true}
-                    setIdAmbienteSelecionado={setIdAmbienteSelecionado}
-                    idAmbienteSelecionado={idAmbienteSelecionado}
+                    setNomeAmbienteSelecionado={setNomeAmbienteSelecionado}
+                    nomeAmbienteSelecionado={nomeAmbienteSelecionado}
+                    lotacaoMaximaSelecionado={lotacaoMaximaSelecionado}
+                    setLotacaoMaximaSelecionado={setLotacaoMaximaSelecionado}
                   />
                 )}
                 ListEmptyComponent={() => (
@@ -162,11 +214,14 @@ const DialogCadastroReserva = props => {
                   style={styles.input}
                   placeholder="Qnt. Pessoas *"
                   keyboardType="numeric"
+                  onChangeText={e => {
+                    setPessoas(e);
+                  }}
                 />
               </View>
             </View>
 
-            <TouchableOpacity style={styles.btnSalvar}>
+            <TouchableOpacity style={styles.btnSalvar} onPress={salvar}>
               <Text
                 style={{
                   color: 'white',
@@ -201,18 +256,14 @@ const styles = {
     borderTopRightRadius: 50,
     elevation: 3,
   },
-  containerImagem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   formContainer: {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
+    marginTop: '10%',
+    marginBottom: '10%',
   },
   containerImagensNavegacao: {
     justifyContent: 'center',
@@ -258,6 +309,7 @@ const styles = {
     borderRadius: 10,
     width: 350,
     elevation: 3,
+    marginBottom: 10,
   },
   btnSalvar: {
     borderRadius: 10,
@@ -265,7 +317,7 @@ const styles = {
     backgroundColor: '#5C96ED',
     width: 307,
     alignSelf: 'center',
-    marginTop: 10,
+    marginTop: '10%',
   },
   selecionado: {
     backgroundColor: 'red',

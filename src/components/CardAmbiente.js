@@ -45,14 +45,17 @@ const CardAmbiente = props => {
     <Pressable
       onPress={() => {
         if (props.reserva) {
-          props.setIdAmbienteSelecionado(props.idAmbiente);
+          props.setNomeAmbienteSelecionado(props.nomeAmbiente);
+          props.setLotacaoMaximaSelecionado(props.lotacaoAmbiente);
         } else {
           setDetalhesAmbienteVisible(true);
         }
       }}
       style={[
         styles.containerCard,
-        props.idAmbiente === props.idAmbienteSelecionado ? {borderColor: '#323160', borderWidth: 1} : null
+        props.nomeAmbiente === props.nomeAmbienteSelecionado
+          ? {borderColor: '#323160', borderWidth: 1}
+          : null,
       ]}>
       <DialogCadastroAmbientes
         modalVisible={modalVisible}
@@ -108,7 +111,7 @@ const CardAmbiente = props => {
               fontWeight: 'bold',
               textAlign: 'left',
               width: 100,
-              height:80
+              height: 80,
             }}>
             {props.nomeAmbiente}
           </Text>
@@ -175,7 +178,7 @@ const styles = {
     alignItems: 'center',
     margin: 5,
     backgroundColor: '#00000021',
-  }
-}
+  },
+};
 
 export default CardAmbiente;
