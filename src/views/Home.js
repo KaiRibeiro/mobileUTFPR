@@ -7,13 +7,13 @@ import {
   Image,
   ImageBackground,
   Pressable,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import Header from '../components/Header';
 import mockupReservas from '../assets/images/mockupReservas.png';
 import piscinaNavegacao from '../assets/images/piscinaNavegacao.jpg';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import DialogCadastroReserva from '../components/DialogCadastroReserva';
 
 const Home = ({navigation}) => {
@@ -57,11 +57,14 @@ const Home = ({navigation}) => {
   return (
     <SafeAreaView style={styles.containerPrincipal}>
       <Header />
-      <DialogCadastroReserva
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        idUsuario={id}
-      />
+      {carregando ? null : (
+        <DialogCadastroReserva
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          idUsuario={id}
+          nomeUsuario={user.nome}
+        />
+      )}
       {carregando ? (
         <View style={{flex: 1, justifyContent: 'center'}}>
           <ActivityIndicator size={300} color="#5C96ED" />
@@ -92,116 +95,137 @@ const Home = ({navigation}) => {
           </View>
         </View>
       )}
-      {carregando ? null : !user.isAdmin ?
-        <TouchableOpacity key={'novaReserva'} style={styles.btnSalvar} onPress={() => {setModalVisible(true)}}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 18,
-                    textAlign: 'center',
-                  }}>
-                  + Nova Reserva
-                </Text>
-          </TouchableOpacity>
-      : null}
-      {carregando ? null : [
-        user.isAdmin ? [
-          <View style={styles.containerNavegacao} key={'navegacao1'}>
+      {carregando ? null : !user.isAdmin ? (
+        <TouchableOpacity
+          key={'novaReserva'}
+          style={styles.btnSalvar}
+          onPress={() => {
+            setModalVisible(true);
+          }}>
           <Text
             style={{
-              textAlign: 'left',
-              fontWeight: 'bold',
+              color: 'white',
               fontSize: 18,
-              color: 'black',
+              textAlign: 'center',
             }}>
-            Navegação
+            + Nova Reserva
           </Text>
-          <Pressable
-            style={styles.containerImagensNavegacao}
-            onPress={() => navigation.navigate('Ambientes')}>
-            <ImageBackground
-              style={styles.containerImagensNavegacao}
-              source={piscinaNavegacao}
-              resizeMode="cover">
-              <View
-                style={{
-                  backgroundColor: '#95785A99',
-                  flex: 1,
-                  flexDirection: 'column',
-                  width: 150,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
-                  Ambientes
-                </Text>
-              </View>
-            </ImageBackground>
-          </Pressable>
-          <Pressable
-            style={styles.containerImagensNavegacao}
-            onPress={() => navigation.navigate('Reservas')}>
-            <ImageBackground
-              style={styles.containerImagensNavegacao}
-              source={mockupReservas}
-              resizeMode="cover">
-              <View
-                style={{
-                  backgroundColor: '#E0DFEF99',
-                  flex: 1,
-                  flexDirection: 'column',
-                  width: 150,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  alignSelf: 'flex-end',
-                }}>
-                <Text
-                  style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
-                  Reservas
-                </Text>
-              </View>
-            </ImageBackground>
-          </Pressable>
-        </View>
-        ] : [
-          <View style={styles.containerNavegacao}  key={'navegacao2'}>
-          <Text
-            style={{
-              textAlign: 'left',
-              fontWeight: 'bold',
-              fontSize: 18,
-              color: 'black',
-            }}>
-            Navegação
-          </Text>
-          <Pressable
-            style={styles.containerImagensNavegacao}
-            onPress={() => navigation.navigate('Minhas Reservas')}>
-            <ImageBackground
-              style={styles.containerImagensNavegacao}
-              source={mockupReservas}
-              resizeMode="cover">
-              <View
-                style={{
-                  backgroundColor: '#E0DFEF99',
-                  flex: 1,
-                  flexDirection: 'column',
-                  width: 150,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  alignSelf: 'flex-end',
-                }}>
-                <Text
-                  style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
-                  Minhas Reservas
-                </Text>
-              </View>
-            </ImageBackground>
-          </Pressable>
-        </View>
-        ]
-      ]}
+        </TouchableOpacity>
+      ) : null}
+      {carregando
+        ? null
+        : [
+            user.isAdmin
+              ? [
+                  <View style={styles.containerNavegacao} key={'navegacao1'}>
+                    <Text
+                      style={{
+                        textAlign: 'left',
+                        fontWeight: 'bold',
+                        fontSize: 18,
+                        color: 'black',
+                      }}>
+                      Navegação
+                    </Text>
+                    <Pressable
+                      style={styles.containerImagensNavegacao}
+                      onPress={() => navigation.navigate('Ambientes')}>
+                      <ImageBackground
+                        style={styles.containerImagensNavegacao}
+                        source={piscinaNavegacao}
+                        resizeMode="cover">
+                        <View
+                          style={{
+                            backgroundColor: '#95785A99',
+                            flex: 1,
+                            flexDirection: 'column',
+                            width: 150,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 18,
+                              fontWeight: 'bold',
+                              color: 'black',
+                            }}>
+                            Ambientes
+                          </Text>
+                        </View>
+                      </ImageBackground>
+                    </Pressable>
+                    <Pressable
+                      style={styles.containerImagensNavegacao}
+                      onPress={() => navigation.navigate('Reservas')}>
+                      <ImageBackground
+                        style={styles.containerImagensNavegacao}
+                        source={mockupReservas}
+                        resizeMode="cover">
+                        <View
+                          style={{
+                            backgroundColor: '#E0DFEF99',
+                            flex: 1,
+                            flexDirection: 'column',
+                            width: 150,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            alignSelf: 'flex-end',
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 18,
+                              fontWeight: 'bold',
+                              color: 'black',
+                            }}>
+                            Reservas
+                          </Text>
+                        </View>
+                      </ImageBackground>
+                    </Pressable>
+                  </View>,
+                ]
+              : [
+                  <View style={styles.containerNavegacao} key={'navegacao2'}>
+                    <Text
+                      style={{
+                        textAlign: 'left',
+                        fontWeight: 'bold',
+                        fontSize: 18,
+                        color: 'black',
+                      }}>
+                      Navegação
+                    </Text>
+                    <Pressable
+                      style={styles.containerImagensNavegacao}
+                      onPress={() => navigation.navigate('Minhas Reservas')}>
+                      <ImageBackground
+                        style={styles.containerImagensNavegacao}
+                        source={mockupReservas}
+                        resizeMode="cover">
+                        <View
+                          style={{
+                            backgroundColor: '#E0DFEF99',
+                            flex: 1,
+                            flexDirection: 'column',
+                            width: 150,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            alignSelf: 'flex-end',
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 18,
+                              fontWeight: 'bold',
+                              color: 'black',
+                            }}>
+                            Minhas Reservas
+                          </Text>
+                        </View>
+                      </ImageBackground>
+                    </Pressable>
+                  </View>,
+                ],
+          ]}
     </SafeAreaView>
   );
 };

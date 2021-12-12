@@ -44,19 +44,6 @@ const MinhasReservas = ({navigation}) => {
           }
         });
         setReservas(listaReservas);
-      });
-    firestore()
-      .collection('usuarios')
-      .where('id', '==', id)
-      .get()
-      .then(resultado => {
-        resultado.docs.forEach(doc => {
-          setUser(doc.data());
-          setCarregando(0);
-        });
-      })
-      .catch(error => {
-        dispatch({type: 'LOGOUT'});
         setCarregando(0);
       });
   }, [refresh]);
@@ -104,9 +91,10 @@ const MinhasReservas = ({navigation}) => {
               nomeAmbiente={item.nomeAmbiente}
               pessoas={item.pessoas}
               dataReserva={item.data}
-              nomeUsuario={user.nome}
               refresh={refresh}
               setRefresh={setRefresh}
+              idUsuario={item.idUsuario}
+              nomeUsuarioReserva={item.nomeUsuario}
             />
           )}
           ListEmptyComponent={() => (

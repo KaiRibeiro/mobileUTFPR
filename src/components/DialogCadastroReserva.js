@@ -44,7 +44,7 @@ const DialogCadastroReserva = props => {
       setMsg('Por favor preencha todos os campos.');
       setCarregando(0);
       setModalVisible(true);
-    } else if (pessoas > lotacaoMaximaSelecionado) {
+    } else if (Number(pessoas) > Number(lotacaoMaximaSelecionado)) {
       setMsgTipo('erro');
       setMsg(
         'Quantidade de pessoas está ultrapassando a lotação máxima do ambiente.'
@@ -60,6 +60,7 @@ const DialogCadastroReserva = props => {
           nomeAmbiente: nomeAmbienteSelecionado,
           idUsuario: props.idUsuario,
           pessoas: pessoas,
+          nomeUsuario: props.nomeUsuario,
         })
         .then(resultado => {
           setMsgTipo('okReserva');
