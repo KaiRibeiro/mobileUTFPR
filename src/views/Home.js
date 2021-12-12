@@ -84,8 +84,9 @@ const Home = ({navigation}) => {
           </View>
         </View>
       )}
-      {carregando ? null : (
-        <View style={styles.containerNavegacao}>
+      {carregando ? null : [
+        user.isAdmin ? [
+          <View style={styles.containerNavegacao} key={'navegacao1'}>
           <Text
             style={{
               textAlign: 'left',
@@ -143,7 +144,44 @@ const Home = ({navigation}) => {
             </ImageBackground>
           </Pressable>
         </View>
-      )}
+        ] : [
+          <View style={styles.containerNavegacao}  key={'navegacao2'}>
+          <Text
+            style={{
+              textAlign: 'left',
+              fontWeight: 'bold',
+              fontSize: 18,
+              color: 'black',
+            }}>
+            Navegação
+          </Text>
+          <Pressable
+            style={styles.containerImagensNavegacao}
+            onPress={() => navigation.navigate('Minhas Reservas')}>
+            <ImageBackground
+              style={styles.containerImagensNavegacao}
+              source={mockupReservas}
+              resizeMode="cover">
+              <View
+                style={{
+                  backgroundColor: '#E0DFEF99',
+                  flex: 1,
+                  flexDirection: 'column',
+                  width: 150,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  alignSelf: 'flex-end',
+                }}>
+                <Text
+                  style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
+                  Minhas Reservas
+                </Text>
+              </View>
+            </ImageBackground>
+          </Pressable>
+        </View>
+        ]
+      ]}
     </SafeAreaView>
   );
 };

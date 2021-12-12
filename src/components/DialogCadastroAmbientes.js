@@ -211,7 +211,7 @@ const DialogCadastroAmbientes = props => {
               {props.editar && !imagem
                 ? [
                     <ImageBackground
-                      key={props.imagem}
+                      key={'imagem props'}
                       style={styles.containerImagensNavegacao}
                       source={{uri: props.imagem}}>
                       <Icon name="add" size={150} color="white" />
@@ -220,14 +220,14 @@ const DialogCadastroAmbientes = props => {
                 : [
                     imagem ? (
                       <ImageBackground
-                        key={imagem}
+                        key={'imagem'}
                         style={styles.containerImagensNavegacao}
                         source={{uri: imagem}}>
                         <Icon name="add" size={150} color="white" />
                       </ImageBackground>
                     ) : (
                       <ImageBackground
-                        key={piscinaNavegacao}
+                        key={'imagem2'}
                         style={styles.containerImagensNavegacao}
                         source={piscinaNavegacao}>
                         <Icon name="add" size={150} color="white" />
