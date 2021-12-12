@@ -3,7 +3,7 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
   ActivityIndicator,
-  ImageBackground,
+  FlatList,
   Keyboard,
   Modal,
   Pressable,
@@ -11,7 +11,6 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  FlatList,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -59,11 +58,11 @@ const DialogCadastroReserva = props => {
           data: data,
           pessoas: pessoas,
           nomeAmbiente: nomeAmbienteSelecionado,
-          idUsario: props.idUsuario,
+          idUsuario: props.idUsuario,
           pessoas: pessoas,
         })
         .then(resultado => {
-          setMsgTipo('okAmbiente');
+          setMsgTipo('okReserva');
           setMsg('Reserva realizada com sucesso.');
           setData(new Date());
           setDataString(null);

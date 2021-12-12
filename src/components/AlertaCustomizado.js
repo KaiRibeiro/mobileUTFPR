@@ -61,6 +61,8 @@ const AlertaCustomizado = props => {
                 } else if (props.msgTipo === 'okAmbiente') {
                   navigation.navigate('Ambientes');
                   props.setModalVisible(false);
+                }else {
+                  props.setModalVisible(false);
                 }
               }}>
               <Text style={styles.textoBtn}>OK</Text>

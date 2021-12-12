@@ -92,8 +92,8 @@ const Home = ({navigation}) => {
           </View>
         </View>
       )}
-      {carregando ? null : (
-        <TouchableOpacity style={styles.btnSalvar} onPress={() => {setModalVisible(true)}}>
+      {carregando ? null : !user.isAdmin ?
+        <TouchableOpacity key={'novaReserva'} style={styles.btnSalvar} onPress={() => {setModalVisible(true)}}>
                 <Text
                   style={{
                     color: 'white',
@@ -103,7 +103,7 @@ const Home = ({navigation}) => {
                   + Nova Reserva
                 </Text>
           </TouchableOpacity>
-      )}
+      : null}
       {carregando ? null : [
         user.isAdmin ? [
           <View style={styles.containerNavegacao} key={'navegacao1'}>
