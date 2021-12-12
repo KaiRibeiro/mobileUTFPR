@@ -7,16 +7,19 @@ import {
   Image,
   ImageBackground,
   Pressable,
+  TouchableOpacity
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import Header from '../components/Header';
 import mockupReservas from '../assets/images/mockupReservas.png';
 import piscinaNavegacao from '../assets/images/piscinaNavegacao.jpg';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import DialogCadastroReserva from '../components/DialogCadastroReserva';
 
 const Home = ({navigation}) => {
   const id = useSelector(state => state.usuarioId);
   const [carregando, setCarregando] = useState(1);
+  const [modalVisible, setModalVisible] = useState(false);
   const [user, setUser] = useState();
   const dispatch = useDispatch();
 
@@ -54,6 +57,11 @@ const Home = ({navigation}) => {
   return (
     <SafeAreaView style={styles.containerPrincipal}>
       <Header />
+      <DialogCadastroReserva
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        idUsuario={id}
+      />
       {carregando ? (
         <View style={{flex: 1, justifyContent: 'center'}}>
           <ActivityIndicator size={300} color="#5C96ED" />
@@ -83,6 +91,18 @@ const Home = ({navigation}) => {
             )}
           </View>
         </View>
+      )}
+      {carregando ? null : (
+        <TouchableOpacity style={styles.btnSalvar} onPress={() => {setModalVisible(true)}}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 18,
+                    textAlign: 'center',
+                  }}>
+                  + Nova Reserva
+                </Text>
+          </TouchableOpacity>
       )}
       {carregando ? null : [
         user.isAdmin ? [
@@ -198,6 +218,14 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  btnSalvar: {
+    borderRadius: 10,
+    paddingVertical: 10,
+    backgroundColor: '#5C96ED',
+    width: 307,
+    alignSelf: 'center',
+    marginTop: 10,
   },
   containerImagensNavegacao: {
     flex: 1,

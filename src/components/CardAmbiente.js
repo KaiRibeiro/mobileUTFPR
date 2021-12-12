@@ -43,18 +43,17 @@ const CardAmbiente = props => {
 
   return (
     <Pressable
-      onPress={() => setDetalhesAmbienteVisible(true)}
-      style={{
-        flexDirection: 'row',
-        backgroundColor: '#00000021',
-        padding: 10,
-        borderRadius: 10,
-        marginBottom: 20,
-        height: 200,
-        width: 350,
-        justifyContent: 'space-around',
-        alignItems: 'center',
-      }}>
+      onPress={() => {
+        if (props.reserva) {
+          props.setIdAmbienteSelecionado(props.idAmbiente);
+        } else {
+          setDetalhesAmbienteVisible(true);
+        }
+      }}
+      style={[
+        styles.containerCard,
+        props.idAmbiente === props.idAmbienteSelecionado ? {borderColor: '#323160', borderWidth: 1} : null
+      ]}>
       <DialogCadastroAmbientes
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -109,28 +108,31 @@ const CardAmbiente = props => {
               fontWeight: 'bold',
               textAlign: 'left',
               width: 100,
+              height:80
             }}>
             {props.nomeAmbiente}
           </Text>
-          <Menu
-            visible={menuVisivel}
-            onDismiss={fecharMenu}
-            anchor={
-              <Icon
-                onPress={abrirMenu}
-                name="more-vert"
-                size={30}
-                color="black"
+          {props.reserva ? null : (
+            <Menu
+              visible={menuVisivel}
+              onDismiss={fecharMenu}
+              anchor={
+                <Icon
+                  onPress={abrirMenu}
+                  name="more-vert"
+                  size={30}
+                  color="black"
+                />
+              }>
+              <Menu.Item
+                onPress={() => setModalVisible(true)}
+                title="Visualizar"
               />
-            }>
-            <Menu.Item
-              onPress={() => setModalVisible(true)}
-              title="Visualizar"
-            />
-            <Menu.Item onPress={editar} title="Editar" />
-            <Divider />
-            <Menu.Item onPress={remover} title="Remover" />
-          </Menu>
+              <Menu.Item onPress={editar} title="Editar" />
+              <Divider />
+              <Menu.Item onPress={remover} title="Remover" />
+            </Menu>
+          )}
         </View>
 
         <Text
@@ -139,7 +141,6 @@ const CardAmbiente = props => {
             color: 'black',
             fontSize: 14,
             fontWeight: '300',
-            height: 100,
             width: 100,
             textAlign: 'left',
           }}>
@@ -162,6 +163,19 @@ const CardAmbiente = props => {
   );
 };
 
-const styles = {};
+const styles = {
+  containerCard: {
+    flexDirection: 'row',
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 20,
+    height: 200,
+    width: 350,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    margin: 5,
+    backgroundColor: '#00000021',
+  }
+}
 
 export default CardAmbiente;

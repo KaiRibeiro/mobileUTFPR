@@ -16,6 +16,7 @@ import Login from '../views/Login';
 import Home from '../views/Home';
 import Ambientes from '../views/Ambientes';
 import Reservas from '../views/Reservas';
+import MinhasReservas from '../views/MinhasReservas';
 
 const Stack = createNativeStackNavigator();
 const deslogadoStack = createNativeStackNavigator();
@@ -200,7 +201,21 @@ const TelasLogado = () => {
                   ),
                 }}
               />
-            ) : null,
+            ) :               <Stack.Screen
+                name="Minhas Reservas"
+                key={user.id}
+                component={MinhasReservas}
+                options={{
+                  headerShown: false,
+                  drawerIcon: ({focused}) => (
+                    <Icon
+                      name="assignment"
+                      size={20}
+                      color={focused ? '#323160' : '#5C96ED'}
+                    />
+                  ),
+                }}
+              />,
           ]}
     </logadoDrawer.Navigator>
   );
